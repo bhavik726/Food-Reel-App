@@ -1,0 +1,33 @@
+const foodModel = require("../models/food.model");
+const storageService = require("../services/storage.services");
+const { v4: uuid } = require("uuid");
+
+async function createFood(req, res) {
+  const fileUploadResult = await storageService.uploadFile(
+    req.file.buffer,
+    uuid(),
+  );
+
+  const foodItem = await foodModel.create({
+    title: req.body.title,
+    description: req.body.description,
+    videoUrl: fileUploadResult,
+    foodPartner: req.foodPartner._id,
+  });
+
+  res
+    .status(201)
+    .json({ message: "Food item created successfully", food: foodItem });
+}
+
+async function getFoods(req, res) {
+  const fooditems = await foodModel.find({});
+  res
+    .status(200)
+    .json({ message: "Food items retrieved successfully", fooditems });
+}
+
+module.exports = {
+  createFood,
+  getFoods,
+};
