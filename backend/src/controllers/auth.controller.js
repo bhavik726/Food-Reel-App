@@ -65,7 +65,7 @@ async function logoutUser(req, res) {
 }
 
 async function registerFoodPartner(req, res) {
-    const { name, email, password } = req.body;
+    const { name, email, password ,phone ,address, contactName} = req.body;
     const isFoodPartnerExists = await FoodPartnerModel.findOne({ email });
 
 
@@ -76,7 +76,13 @@ async function registerFoodPartner(req, res) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    const foodPartner = await FoodPartnerModel.create({ name, email, password: hashedPassword });
+    const foodPartner = await FoodPartnerModel.create({ name,
+         email,
+          password: hashedPassword,
+              phone,
+              address,
+              contactName   
+         });
 
     res.token = jwt.sign({id: foodPartner._id}, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.cookie("token", token);
@@ -86,6 +92,10 @@ async function registerFoodPartner(req, res) {
             id: foodPartner._id,
             name: foodPartner.name,
             email: foodPartner.email,
+            phone: foodPartner.phone,
+            address: foodPartner.address,
+            contactName: foodPartner.contactName
+
         }
     })
 }   

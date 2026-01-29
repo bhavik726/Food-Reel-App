@@ -1,0 +1,114 @@
+:root {
+  /* Light Mode Colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-card: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #6c757d;
+  --text-tertiary: #adb5bd;
+  --border-color: #e9ecef;
+  --input-bg: #ffffff;
+  --input-border: #dee2e6;
+  --input-focus: #4a90e2;
+  --button-primary: #4a90e2;
+  --button-primary-hover: #357abd;
+  --button-text: #ffffff;
+  --link-color: #4a90e2;
+  --link-hover: #357abd;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --error-color: #dc3545;
+  --success-color: #28a745;
+  --accent-color: #ff6b6b;
+
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+
+  /* Font Sizes */
+  --font-xs: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-base: 1rem;
+  --font-lg: 1.125rem;
+  --font-xl: 1.25rem;
+  --font-2xl: 1.5rem;
+  --font-3xl: 2rem;
+
+  /* Font Weights */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* Z-Index */
+  --z-dropdown: 1000;
+  --z-modal: 1050;
+  --z-tooltip: 1100;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+  --bg-primary: #0f0f0f;
+  --bg-secondary: #1a1a1a;
+  --bg-card: #1e1e1e;
+  --text-primary: #f8f9fa;
+  --text-secondary: #adb5bd;
+  --text-tertiary: #6c757d;
+  --border-color: #2d2d2d;
+  --input-bg: #1e1e1e;
+  --input-border: #2d2d2d;
+  --input-focus: #5aa3f0;
+  --button-primary: #5aa3f0;
+  --button-primary-hover: #4a90e2;
+  --button-text: #ffffff;
+  --link-color: #5aa3f0;
+  --link-hover: #4a90e2;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --error-color: #ff4d4d;
+  --success-color: #51cf66;
+  --accent-color: #ff8787;
+}
+
+/* Prefers Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-primary: #0f0f0f;
+    --bg-secondary: #1a1a1a;
+    --bg-card: #1e1e1e;
+    --text-primary: #f8f9fa;
+    --text-secondary: #adb5bd;
+    --text-tertiary: #6c757d;
+    --border-color: #2d2d2d;
+    --input-bg: #1e1e1e;
+    --input-border: #2d2d2d;
+    --input-focus: #5aa3f0;
+    --button-primary: #5aa3f0;
+    --button-primary-hover: #4a90e2;
+    --button-text: #ffffff;
+    --link-color: #5aa3f0;
+    --link-hover: #4a90e2;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --error-color: #ff4d4d;
+    --success-color: #51cf66;
+    --accent-color: #ff8787;
+  }
+}
