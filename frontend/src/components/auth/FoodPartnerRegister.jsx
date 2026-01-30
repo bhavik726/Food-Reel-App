@@ -1,8 +1,33 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/auth.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const FoodPartnerRegister = () => {
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const businessName = e.target.businessName.value;
+    const contactName = e.target.contactName.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const address = e.target.address.value;
+    const response = await axios.post("/api/food-partners/register", {
+      businessName,
+      contactName,  
+      email,
+      password,
+      address
+    },{ withCredentials: true})
+    navigate("/create-food");
+  }
+
+
+
+
   const [theme, setTheme] = useState(
     window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   );

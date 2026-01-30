@@ -1,11 +1,35 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/auth.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 const UserRegister = () => {
+
+  const navigate = useNavigate();
   const [theme, setTheme] = useState(
     window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   );
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const firstName = e.target.firstName.value;
+    const lastName = e.target.lastName.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    // Handle form submission logic here
+  const response = await axios.post("/api/users/register", {
+      fullName: firstName + " " + lastName,
+      email,
+      password
+  },{ withCredentials: true})
+  }
+
+  navigate("/");
+
+
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';

@@ -1,8 +1,26 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/auth.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const FoodPartnerLogin = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    const response = await axios.post("/api/food-partners/login", {
+      email,
+      password
+    }, { withCredentials: true });
+
+    navigate("/create-food");
+  };
+
   const [theme, setTheme] = useState(
     window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   );
@@ -28,7 +46,7 @@ const FoodPartnerLogin = () => {
             <p className="auth-subtitle">Sign in to manage your restaurant</p>
           </div>
 
-          <form className="auth-form">
+          <form className="auth-form" onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="email" className="form-label">
                 Business Email

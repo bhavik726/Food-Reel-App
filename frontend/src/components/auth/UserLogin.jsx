@@ -1,8 +1,26 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/auth.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; 
 
 const UserLogin = () => {
+
+const handlSubmit = async (e) => {
+  e.preventDefault();
+
+  const navigate = useNavigate();
+  
+  const email = e.target.email.value;   
+  const password = e.target.password.value;
+
+  const response = await axios.post("/api/users/login", {
+    email,
+    password
+  },{ withCredentials: true})
+
+
+
   const [theme, setTheme] = useState(
     window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   );
