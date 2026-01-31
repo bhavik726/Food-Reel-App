@@ -2,28 +2,33 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/auth.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 const UserLogin = () => {
-
-const handlSubmit = async (e) => {
-  e.preventDefault();
-
   const navigate = useNavigate();
-  
-  const email = e.target.email.value;   
-  const password = e.target.password.value;
-
-  const response = await axios.post("/api/users/login", {
-    email,
-    password
-  },{ withCredentials: true})
-
-
-
   const [theme, setTheme] = useState(
     window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   );
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    try {
+      const response = await axios.post("/api/auth/users/login", {
+        email,
+        password
+      }, { withCredentials: true });
+
+      console.log('Login successful:', response.data);
+      navigate("/");
+    } catch (error) {
+      console.error('Login error:', error);
+      alert(error.response?.data?.message || 'Login failed. Please try again.');
+    }
+  };
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
@@ -46,70 +51,70 @@ const handlSubmit = async (e) => {
             <p className="auth-subtitle">Sign in to continue to your account</p>
           </div>
 
-          <form className="auth-form">
-            <div className="form-group">
-              <label htmlFor="email" className="form-label">
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="form-input"
-                placeholder="john.doe@example.com"
-                required
-              />
+          <form className="auth-form" onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="email" className="form-label">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  className="form-input"
+                  placeholder="john.doe@example.com"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="password" className="form-label">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  className="form-input"
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+
+              <div className="forgot-password">
+                <Link to="/user/forgot-password" className="auth-link">
+                  Forgot password?
+                </Link>
+              </div>
+
+              <div className="checkbox-group">
+                <input
+                  type="checkbox"
+                  id="remember"
+                  name="remember"
+                  className="checkbox-input"
+                />
+                <label htmlFor="remember" className="checkbox-label">
+                  Remember me
+                </label>
+              </div>
+
+              <button type="submit" className="auth-submit-btn">
+                Sign In
+              </button>
+            </form>
+
+            <div className="auth-footer">
+              <p className="auth-footer-text">
+                Don't have an account?{' '}
+                <Link to="/user/register" className="auth-link">
+                  Sign up
+                </Link>
+              </p>
             </div>
-
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="form-input"
-                placeholder="••••••••"
-                required
-              />
-            </div>
-
-            <div className="forgot-password">
-              <Link to="/user/forgot-password" className="auth-link">
-                Forgot password?
-              </Link>
-            </div>
-
-            <div className="checkbox-group">
-              <input
-                type="checkbox"
-                id="remember"
-                name="remember"
-                className="checkbox-input"
-              />
-              <label htmlFor="remember" className="checkbox-label">
-                Remember me
-              </label>
-            </div>
-
-            <button type="submit" className="auth-submit-btn">
-              Sign In
-            </button>
-          </form>
-
-          <div className="auth-footer">
-            <p className="auth-footer-text">
-              Don't have an account?{' '}
-              <Link to="/user/register" className="auth-link">
-                Sign up
-              </Link>
-            </p>
           </div>
         </div>
-      </div>
-    </>
-  );
-};
+      </>
+    );
+  };
 
-export default UserLogin;
+  export default UserLogin;

@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 
 const UserRegister = () => {
-
   const navigate = useNavigate();
   const [theme, setTheme] = useState(
     window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
@@ -19,15 +18,21 @@ const UserRegister = () => {
     const lastName = e.target.lastName.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
-    // Handle form submission logic here
-  const response = await axios.post("/api/users/register", {
-      fullName: firstName + " " + lastName,
-      email,
-      password
-  },{ withCredentials: true})
-  }
 
-  navigate("/");
+    try {
+      const response = await axios.post("/api/auth/users/register", {
+        fullname: firstName + " " + lastName,
+        email,
+        password
+      }, { withCredentials: true });
+
+      console.log('Registration successful:', response.data);
+      navigate("/");
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert(error.response?.data?.message || 'Registration failed. Please try again.');
+    }
+  };
 
 
 
@@ -52,7 +57,7 @@ const UserRegister = () => {
             <p className="auth-subtitle">Join us and start ordering delicious meals</p>
           </div>
 
-          <form className="auth-form">
+          <form className="auth-form" onSubmit={handleSubmit}>
             <div className="form-row">
               <div className="form-group">
                 <label htmlFor="firstName" className="form-label">

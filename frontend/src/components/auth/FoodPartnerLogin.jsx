@@ -13,12 +13,18 @@ const FoodPartnerLogin = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    const response = await axios.post("/api/food-partners/login", {
-      email,
-      password
-    }, { withCredentials: true });
+    try {
+      const response = await axios.post("/api/auth/food-partners/login", {
+        email,
+        password
+      }, { withCredentials: true });
 
-    navigate("/create-food");
+      console.log('Login successful:', response.data);
+      navigate("/create-food");
+    } catch (error) {
+      console.error('Login error:', error);
+      alert(error.response?.data?.message || 'Login failed. Please try again.');
+    }
   };
 
   const [theme, setTheme] = useState(

@@ -15,15 +15,25 @@ const FoodPartnerRegister = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
     const address = e.target.address.value;
-    const response = await axios.post("/api/food-partners/register", {
-      businessName,
-      contactName,  
-      email,
-      password,
-      address
-    },{ withCredentials: true})
-    navigate("/create-food");
-  }
+    const phone = e.target.phone.value;
+
+    try {
+      const response = await axios.post("/api/auth/food-partners/register", {
+        name: businessName,
+        contactName,
+        email,
+        password,
+        address,
+        phone
+      }, { withCredentials: true });
+
+      console.log('Registration successful:', response.data);
+      navigate("/create-food");
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert(error.response?.data?.message || 'Registration failed. Please try again.');
+    }
+  };
 
 
 
@@ -53,7 +63,7 @@ const FoodPartnerRegister = () => {
             <p className="auth-subtitle">Register your restaurant and reach more customers</p>
           </div>
 
-          <form className="auth-form">
+          <form className="auth-form" onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="businessName" className="form-label">
                 Business Name
@@ -92,6 +102,20 @@ const FoodPartnerRegister = () => {
                 name="email"
                 className="form-input"
                 placeholder="contact@business.com"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="phone" className="form-label">
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                className="form-input"
+                placeholder="+1 (555) 123-4567"
                 required
               />
             </div>
