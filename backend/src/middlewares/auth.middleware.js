@@ -1,6 +1,5 @@
-const foodPartnerController = require("../controllers/foodPartner.controller");
 const jwt = require("jsonwebtoken");
-const userModel = require("../models/user.model");
+const supabase = require("../db/supabase");
 
 async function authFoodPartnerMiddleware(req, res, next) {
   const token = req.cookies.token;
@@ -12,13 +11,16 @@ async function authFoodPartnerMiddleware(req, res, next) {
   try {
     const decode = jwt.verify(token, process.env.JWT_SECRET);
 
-    const foodPartner = await foodPartnerController.getFoodPartnerById(
-      decode.id,
-    );
+    const { data: foodPartner, error } = await supabase
+      .from('food_partners')
+      .select('*')
+      .eq('id', decode.id)
+      .single();
 
-    if (!foodPartner) {
+    if (error || !foodPartner) {
       return res.status(401).json({ message: "Food Partner not found" });
     }
+    
     req.foodPartner = foodPartner;
     next();
   } catch (err) {
@@ -30,23 +32,30 @@ async function authUserMiddleware(req, res, next) {
   const token = req.cookies.token;
 
   if (!token) {
-    return res.status(401).json({ message: "pleasemlogin first" });
+    return res.status(401).json({ message: "Please login first" });
   }
-  
 
   try {
     const decode = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await userModel.findById(decode.id);   
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', decode.id)
+      .single();
+
+    if (error || !user) {
+      return res.status(401).json({ message: "User not found" });
+    }
 
     req.user = user;
-    next()
-  }
-  catch{
+    next();
+  } catch (err) {
     return res.status(401).json({ message: "Invalid Token" });
   }
 }
+
 module.exports = {
-    authFoodPartnerMiddleware,
-    authUserMiddleware
-}
+  authFoodPartnerMiddleware,
+  authUserMiddleware
+};
