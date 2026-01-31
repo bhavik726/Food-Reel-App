@@ -6,8 +6,12 @@ async function registerUser(req, res) {
     try {
         const { fullname, email, password } = req.body;
 
+        if (!fullname || !email || !password) {
+            return res.status(400).json({ message: "Missing required fields" });
+        }
+
         // Check if user already exists
-        const { data: existingUser } = await supabase
+        const { data: existingUser, error: checkError } = await supabase
             .from('users')
             .select('*')
             .eq('email', email)
@@ -29,7 +33,6 @@ async function registerUser(req, res) {
         if (error) {
             return res.status(500).json({ message: "Error creating user", error: error.message });
         }
-
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         res.cookie("token", token);
@@ -51,6 +54,10 @@ async function loginUser(req, res) {
     try {
         const { email, password } = req.body;
 
+        if (!email || !password) {
+            return res.status(400).json({ message: "Missing email or password" });
+        }
+
         // Find user by email
         const { data: user, error } = await supabase
             .from('users')
@@ -67,7 +74,6 @@ async function loginUser(req, res) {
         if (!isPasswordCorrect) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
-
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         res.cookie("token", token);
@@ -97,8 +103,12 @@ async function registerFoodPartner(req, res) {
     try {
         const { name, email, password, phone, address, contactName } = req.body;
 
+        if (!name || !email || !password || !phone || !address || !contactName) {
+            return res.status(400).json({ message: "Missing required fields" });
+        }
+
         // Check if food partner already exists
-        const { data: existingPartner } = await supabase
+        const { data: existingPartner, error: checkError } = await supabase
             .from('food_partners')
             .select('*')
             .eq('email', email)
@@ -127,7 +137,6 @@ async function registerFoodPartner(req, res) {
         if (error) {
             return res.status(500).json({ message: "Error creating food partner", error: error.message });
         }
-
         const token = jwt.sign({ id: foodPartner.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.cookie("token", token);
 

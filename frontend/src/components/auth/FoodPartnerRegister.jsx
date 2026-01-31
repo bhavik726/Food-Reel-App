@@ -27,10 +27,8 @@ const FoodPartnerRegister = () => {
         phone
       }, { withCredentials: true });
 
-      console.log('Registration successful:', response.data);
       navigate("/create-food");
     } catch (error) {
-      console.error('Registration error:', error);
       alert(error.response?.data?.message || 'Registration failed. Please try again.');
     }
   };

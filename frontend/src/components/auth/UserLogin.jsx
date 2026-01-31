@@ -22,10 +22,8 @@ const UserLogin = () => {
         password
       }, { withCredentials: true });
 
-      console.log('Login successful:', response.data);
       navigate("/");
     } catch (error) {
-      console.error('Login error:', error);
       alert(error.response?.data?.message || 'Login failed. Please try again.');
     }
   };

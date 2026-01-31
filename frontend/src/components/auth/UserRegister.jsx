@@ -26,10 +26,8 @@ const UserRegister = () => {
         password
       }, { withCredentials: true });
 
-      console.log('Registration successful:', response.data);
       navigate("/");
     } catch (error) {
-      console.error('Registration error:', error);
       alert(error.response?.data?.message || 'Registration failed. Please try again.');
     }
   };
